@@ -1,0 +1,57 @@
+本关任务：给定一张 tb_Salary 表，如下所示，有 m = 男性 和 f = 女性的值。交换所有的 f 和 m 值（例如，将所有 f 值更改为 m，反之亦然）。
+
+id	name	sex	salary
+1	Elon	f	7000
+2	Donny	f	8000
+3	Carey	m	6000
+4	Karin	f	9000
+5	Larisa	m	5500
+6	Sora	m	500
+要求只使用一句更新update语句，且不允许含有任何select语句完成任务。
+####相关知识
+略
+####编程要求
+
+根据提示并仔细阅读右侧代码，在Begin - End区域内进行代码补充。
+
+提示
+
+可能需要使用到 CASE 函数或 IF 函数，使用方法如下实例：
+
+SELECT
+    case                       ###如果
+    when sex='1' then '男'     ###sex='1'，则返回值'男'
+    when sex='2' then '女'     ###sex='2'，则返回值'女'  
+    else '其他'     ###其他的返回'其他’
+    end                        ###结束
+from   sys_user     ###整体理解： 在sys_user表中如果sex='1'，则返回值'男'如果sex='2'，则返回值'女' 否则返回'其他’
+select if(sex='1','男','女') as sex from sys_user;     ###如果sex='1'则返回值'男' 否则返回值为'女'
+测试说明
+
+补充完代码后，点击测评，平台会对你编写的代码进行测试，当你的结果与预期输出一致时，即为通过。
+
+预期输出：
+
++----+--------+-----+--------+
+| id | name   | sex | salary |
++----+--------+-----+--------+
+|  1 | Elon   | m   |   7000 |
+|  2 | Donny  | m   |   8000 |
+|  3 | Carey  | f   |   6000 |
+|  4 | karin  | m   |   9000 |
+|  5 | Larisa | f   |   5500 |
+|  6 | Sora   | f   |    500 |
++----+--------+-----+--------+
+
+
+#请在此添加实现代码
+########## Begin ##########
+UPDATE tb_Salary
+SET 
+sex = CASE sex WHEN 'm' THEN 'f'
+ELSE 'm'
+END;
+
+########## End ##########
+
+
