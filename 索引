@@ -1,0 +1,149 @@
+为了完成本关任务，你需要掌握：
+
+索引是什么；
+
+索引的分类；
+
+索引的创建和删除；
+
+查询索引。
+
+索引是什么
+
+数据库索引是一种提高数据库系统性能的方法。索引能让数据库服务器更快地查找和获取表中指定的行。
+
+例如，为了方便读者快速查找书中的术语，很多书籍在最后附加了索引页，术语按字母排序，同时给出页码。这样读者可以根据术语名，快速获取页码，而不用翻阅整本书。
+
+但是索引也给数据库系统带来了一定的开销，所以我们应该谨慎地使用它们。
+
+例如现在有一张简单的表：
+
+create table test
+(
+    id int not null,
+    content varchar(255) not null
+)
+在这张表中假设存了1000条数据（id依次递增且不重复），我们要查询表中id=234的数据，sql如下：
+
+select * from test where id = 234;
+一般情况，在没有索引下，数据库系统必须扫描整个表（一行一行地检查），才能获取到所有满足条件的行，很明显这种方法的效率是非常低的。
+
+那么肯定有优化的方法，就是 索引 了！在id字段上添加索引，这样 MySQL 就只需要扫描一行数据就可以了。
+
+索引的分类
+
+索引大体可分为单列索引（普通索引，唯一索引，主键索引）、组合索引、全文索引、空间索引四类。本实训我们主要介绍单例索引和组合索引：
+
+单例索引：一个索引只包含单个列，但一个表中可以有多个单列索引；
+
+普通索引：仅加速查询 最基本的索引，没有任何限制，是我们大多数情况下使用到的索引；
+
+唯一索引：索引列中的值必须是唯一的，但允许为空值；
+
+主键索引：是一种特殊的唯一索引，不允许有空值。
+
+组合索引：在表的多个字段上创建的索引，只有在查询条件中使用了这些字段的左边字段时，索引才会被使用，使用组合索引时遵循最左前缀集合。
+
+索引的创建和删除
+
+创建索引
+
+创建索引有两种方式，一种是在建表时创建，另一种是建表后创建：
+
+普通索引：
+创表时创建普通索引：
+
+CREATE table mytable(
+ id INT NOT NULL,
+ username VARCHAR(16) NOT NULL,
+ INDEX [indexName] (username)
+);
+建表后创建普通索引：
+
+create INDEX 索引名称 on 表名(字段名);
+#或者
+ALTER TABLE 表名 ADD INDEX 索引名称 (字段名);
+唯一索引：
+
+CREATE UNIQUE INDEX 索引名称 ON 表名(字段名);
+#或者
+ALTER TABLE 表名 ADD UNIQUE (字段名);
+主键索引：主键索引一般在建表时创建，会设为 int 而且是 AUTO_INCREMENT自增类型的，例如一般表的id字段。
+
+CREATE TABLE mytable (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
+);
+组合索引：组合索引就是在多个字段上创建一个索引。（应用场景：当表的行数远远大于索引键的数目时，使用这种方式可以明显加快表的查询速度）
+
+CREATE INDEX 索引名称 ON 表名(字段1,字段2，字段3);
+#或者
+ALTER TABLE 表名 ADD INDEX 索引名称(字段1，字段2，字段3);
+删除索引
+
+同样，删除索引也有两种方式。
+
+#使用drop删除索引
+drop index index_name on table_name ;
+#使用alter删除索引
+alter table table_name drop index index_name ;
+alter table table_name drop primary key ; #删除主键索引
+查询表中索引
+
+查询索引 SQL：
+
+show index from 表名;
+如下图：
+
+
+
+
+查询结果部分字段解释：
+
+字段名	说明
+Table	创建索引的表
+Non_unique	表示索引非唯一，1代表非唯一索引，0代表唯一索引，意思就是该索引是不是唯一索引
+Key_name	索引名称
+Seq_in_index	表示该字段在索引中的位置，单列索引的话该值为1，组合索引为每个字段在索引定义中的顺序(只需要知道单列索引该值就为1，组合索引为别的)
+Column_name	表示定义索引的列字段
+Sub_part	表示索引的长度
+Null	表示该字段是否能为空值
+Index_type	表示索引类型
+编程要求
+
+在右侧编辑器补充代码，要求如下：
+
+① 在创建student表结构时为stu_id字段创建名为pk_student的主键索引；
+
+② 在age字段上建立名为idx_age的普通索引；
+
+③ 在classes字段上添加名为uniq_classes的唯一索引，并以降序排列；
+
+④ 在name、sex和grade三个字段上建立名为idx_group的组合索引。
+
+
+
+use School;
+#请在此处添加实现代码
+########## Begin ##########
+
+#1.创建名为pk_student的主键索引
+create table student(
+    stu_id int not null,
+    name varchar(25) not null,
+    age int not null,
+    sex char(2) not null,
+    classes int not null,
+    grade int not null,
+    primary key(stu_id)
+);
+
+#2.创建名为idx_age的普通索引
+CREATE INDEX idx_age ON student(age); 
+#3.创建名为uniq_classes的唯一索引
+
+CREATE UNIQUE INDEX uniq_classes ON student(classes DESC);
+#4.创建名为idx_group的组合索引
+
+CREATE INDEX idx_group ON student(name,sex,grade);
+########## End ##########
