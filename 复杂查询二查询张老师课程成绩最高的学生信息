@@ -1,0 +1,56 @@
+本关任务：根据提供的表和数据，查询选修“张三”老师所授课程的学生中，成绩最高的学生信息（具体输出信息请查看测试说明）及其成绩。
+
+student表数据：
+
+s_id	s_name	s_sex
+01	Mia	女
+02	Riley	男
+03	Aria	女
+04	Lucas	女
+05	Oliver	男
+06	Caden	男
+07	Lily	女
+08	Jacob	男
+course表数据：
+
+c_id	c_name	t_id
+01	Chinese	02
+02	Math	01
+03	English	03
+teacher表数据：
+
+t_id	t_name
+01	张三
+02	李四
+03	王五
+score表部分数据：
+
+s_id	c_id	s_score
+01	01	80
+01	02	90
+01	03	99
+02	01	70
+…	…	…
+
+预期输出：
+
++------+--------+-------+---------+------+--------+
+| s_id | s_name | s_sex | s_score | c_id | c_name |
++------+--------+-------+---------+------+--------+
+| 01   | Mia    | 女    |      90 | 02   | Math   |
++------+--------+-------+---------+------+--------+
+
+
+#请在此添加实现代码
+########## Begin ##########
+SELECT st.*,sc.s_score,c.c_id,c.c_name FROM student st
+INNER JOIN score sc ON sc.s_id=st.s_id
+INNER JOIN course c ON c.c_id=sc.c_id 
+INNER JOIN teacher t ON t.t_id=c.t_id AND  t.t_name="张三"
+ORDER BY sc.s_score DESC
+LIMIT 1;
+
+########## End ##########
+
+
+
