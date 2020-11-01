@@ -1,0 +1,29 @@
+本关任务：计算每个班的语文总成绩和数学总成绩，要求科目中低于60分的成绩不记录总成绩。
+
+tb_score结构数据：
+
+name	chinese	maths
+A	89	98
+B	99	89
+C	55	66
+D	88	66
+E	55	66
+F	88	99
+tb_class表结构数据：
+
+stuname	classname
+A	C1
+B	C2
+C	C3
+D	C2
+E	C1
+F	C3
+
+
+
+#请在此添加实现代码
+########## Begin ##########
+select c.classname,sum(if(chinese>=60,chinese,0)) chinese,sum(if(maths>=60,maths,0)) maths
+from tb_class c left join tb_score s on c.stuname=s.name group by c.classname;
+
+########## End ##########
