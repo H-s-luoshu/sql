@@ -1,0 +1,58 @@
+本关任务：根据提供的表和数据，查询平均成绩小于60分的同学的学生编号（s_id）、学生姓名（s_name）和平均成绩（avg_score），要求平均成绩保留2位小数点。（注意：包括有成绩的和无成绩的）
+
+student表数据：
+
+s_id	s_name	s_sex
+01	Mia	女
+02	Riley	男
+03	Aria	女
+04	Lucas	女
+05	Oliver	男
+06	Caden	男
+07	Lily	女
+08	Jacob	男
+course表数据：
+
+c_id	c_name	t_id
+01	Chinese	02
+02	Math	01
+03	English	03
+teacher表数据：
+
+t_id	t_name
+01	张三
+02	李四
+03	王五
+score表部分数据：
+
+s_id	c_id	s_score
+01	01	80
+01	02	90
+01	03	99
+02	01	70
+…	…	…
+
+预期输出
+
++------+--------+-----------+
+| s_id | s_name | avg_score |
++------+--------+-----------+
+| 04   | Lucas  |     33.33 |
+| 06   | Caden  |     32.50 |
+| 08   | Jacob  |      0.00 |
++------+--------+-----------+
+
+#请在此添加实现代码
+########## Begin ##########
+SELECT
+st.s_id,
+st.s_name,
+CASE WHEN AVG(sc.s_score) IS  NULL  THEN 0.00 ELSE ROUND (AVG(sc.s_score) ,2) END AS avg_score
+FROM  student st
+LEFT JOIN score sc ON sc.s_id=st.s_id
+GROUP BY st.s_id 
+HAVING AVG(sc.s_score)<60  OR  AVG(sc.s_score) IS NULL
+
+
+########## End ##########
+
