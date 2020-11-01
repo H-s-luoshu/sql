@@ -1,0 +1,48 @@
+本关任务：根据提供的表和数据，查询各科成绩，进行排序并显示排名，按学生编号（s_id）、课程编号（c_id）、学生成绩（s_score）和排名（rank）进行输出，具体效果请查看测试集。
+
+student表数据：
+
+s_id	s_name	s_sex
+01	Mia	女
+02	Riley	男
+03	Aria	女
+04	Lucas	女
+05	Oliver	男
+06	Caden	男
+07	Lily	女
+08	Jacob	男
+course表数据：
+
+c_id	c_name	t_id
+01	Chinese	02
+02	Math	01
+03	English	03
+teacher表数据：
+
+t_id	t_name
+01	张三
+02	李四
+03	王五
+score表部分数据：
+
+s_id	c_id	s_score
+01	01	80
+01	02	90
+01	03	99
+02	01	70
+…	…	…
+
+
+
+#请在此添加实现代码
+########## Begin ##########
+
+select a.* ,count(b.s_score)+1 rank from score a left join score b
+on a.c_id = b.c_id and a.s_score < b.s_score
+group by a.c_id,a.s_id
+order by a.c_id,count(b.s_score);
+
+########## End ##########
+
+
+
